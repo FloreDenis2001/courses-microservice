@@ -1,5 +1,7 @@
 package com.example.courseservice.lection.service;
 
+import com.example.courseservice.lection.dto.LectionCreateRequest;
+import com.example.courseservice.lection.dto.LectionCreateResponse;
 import com.example.courseservice.lection.dto.LectionDTO;
 import com.example.courseservice.lection.exception.LectionNotFoundException;
 import com.example.courseservice.lection.model.Lection;
@@ -20,21 +22,31 @@ public class LectionCommandServiceImpl implements LectionCommandService {
     }
 
     @Override
-    public void addLection(LectionDTO lectionDTO) {
-         Optional<Lection> lection = lectionRepo.findByCodeLection(lectionDTO.codeLection());
-        if (lection.isPresent()) {
-            throw new LectionNotFoundException("Lection with code " + lectionDTO.codeLection() + " already exists");
+    public LectionCreateResponse addLection(LectionCreateRequest lectionCreateRequest, String videoUrl, String supportFileUrl) {
+        Optional<Lection> existingLection = lectionRepo.findByCode(lectionCreateRequest.code());
+        if (existingLection.isPresent()) {
+            throw new LectionNotFoundException("Lection with code " + lectionCreateRequest.code() + " already exists");
         }
-//        lectionRepo.save(Lection.builder()
-//                .code(lectionDTO.codeLection())
-//                .description(lectionDTO.description())
-//                .duration(lectionDTO.duration())
-//                .name(lectionDTO.name())
-//                .url(lectionDTO.url())
-//                .build());
+        Lection addLection = Lection.builder()
+                .code(lectionCreateRequest.code())
+                .name(lectionCreateRequest.name())
+                .description(lectionCreateRequest.description())
+                .videoUrl(videoUrl)
+                .supportFileUrl(supportFileUrl)
+                .duration(lectionCreateRequest.duration())
+                .build();
 
+        lectionRepo.saveAndFlush(addLection);
+
+        return LectionCreateResponse.builder()
+                .code(addLection.getCode())
+                .name(addLection.getName())
+                .description(addLection.getDescription())
+                .duration(addLection.getDuration())
+                .videoUrl(addLection.getVideoUrl())
+                .supportFileUrl(addLection.getSupportFileUrl())
+                .build();
     }
-
 
     @Override
     public void updateLection(String codeLection, LectionDTO lectionDTO) {

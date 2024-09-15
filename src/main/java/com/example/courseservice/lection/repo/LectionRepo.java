@@ -10,8 +10,7 @@ import java.util.Optional;
 @Repository
 public interface LectionRepo extends JpaRepository<Lection, Long> {
 
-    @Query
-    Optional<Lection> findByCodeLection(String codeLection);
+    Optional<Lection> findByCode(String code);
 
 
 }

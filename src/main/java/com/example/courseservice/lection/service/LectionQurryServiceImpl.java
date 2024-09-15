@@ -18,7 +18,7 @@ public class LectionQurryServiceImpl implements LectionQuerryService{
 
     @Override
     public Optional<Lection> findByCodeLection(String codeLection) {
-        Optional<Lection> lection = lectionRepo.findByCodeLection(codeLection);
+        Optional<Lection> lection = lectionRepo.findByCode(codeLection);
         if (lection.isEmpty()) {
             throw new LectionNotFoundException("Lection with code " + codeLection + " not found");
         }

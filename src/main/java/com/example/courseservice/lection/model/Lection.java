@@ -1,5 +1,6 @@
 package com.example.courseservice.lection.model;
 
+import com.example.courseservice.course.model.Course;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -40,8 +41,7 @@ public class Lection {
     @Column(name = "description", nullable = false)
     private String description;
 
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 }
