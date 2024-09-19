@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.example.courseservice.intercom.b2")
+@EnableFeignClients(basePackages = "com.example.courseservice.intercom")
 public class CourseServiceApplication {
 
 	public static void main(String[] args) {

@@ -22,8 +22,9 @@ public class CommandB2S3Adapter {
      * @param file      fișierul de încărcat
      * @param fileName  numele fișierului care va fi generat
      * @return URL-ul fișierului încărcat
-     * @throws RuntimeException dacă fișierul nu poate fi încărcat
+     * @throws UploadFileException dacă fișierul nu poate fi încărcat
      */
+
     public String uploadFile(MultipartFile file, String fileName) {
         ResponseEntity<String> response = commandB2S3.uploadFile(file, fileName);
 

@@ -4,8 +4,12 @@ import com.example.courseservice.course.dto.CourseCreateRequest;
 import com.example.courseservice.course.dto.CourseResponse;
 import com.example.courseservice.course.services.CourseCommandServiceImpl;
 import com.example.courseservice.course.services.CourseQuerryServiceImpl;
+import com.example.courseservice.intercom.auth.AuthServiceAdapter;
 import com.example.courseservice.intercom.b2.CommandB2S3Adapter;
-import jakarta.validation.Valid;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,30 +30,37 @@ public class CourseControllerServer {
 
     private final CommandB2S3Adapter commandB2S3Adapter;
 
-    public CourseControllerServer(CourseQuerryServiceImpl courseQuerryService, CourseCommandServiceImpl courseCommandService, CommandB2S3Adapter commandB2S3Adapter) {
+    private final AuthServiceAdapter authServiceAdapter;
+
+    public CourseControllerServer(CourseQuerryServiceImpl courseQuerryService, CourseCommandServiceImpl courseCommandService, CommandB2S3Adapter commandB2S3Adapter, AuthServiceAdapter authServiceAdapter) {
         this.courseQuerryService = courseQuerryService;
         this.courseCommandService = courseCommandService;
         this.commandB2S3Adapter = commandB2S3Adapter;
-    }
-
-
-    @PostMapping("/addFile")
-    public String addFile(@RequestPart("file") MultipartFile file) {
-
-        return "File uploaded successfully";
-
-    }
-
-    @PostMapping("/addCourse")
-    public String addCourse(@RequestPart("course") CourseCreateRequest courseCreateRequest) {
-        return "Course added successfully";
+        this.authServiceAdapter = authServiceAdapter;
     }
 
 
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CourseResponse> createCourse(@RequestPart("file") MultipartFile file,
-                                                       @RequestPart("course")  CourseCreateRequest courseCreateRequest
-    ) {
+    public ResponseEntity<CourseResponse> createCourse(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("course") String courseJson ,
+            @RequestHeader("Authorization") String token
+             ) {
+
+        String userRole = authServiceAdapter.getUserRole(token);
+
+        if (!"ADMIN".equals(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CourseCreateRequest courseCreateRequest;
+        try {
+            courseCreateRequest = objectMapper.readValue(courseJson, CourseCreateRequest.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         System.out.println("CourseCreateRequest: " + courseCreateRequest);
 
@@ -59,8 +70,8 @@ public class CourseControllerServer {
 
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-
             String imageUrl = commandB2S3Adapter.uploadFile(file, fileName);
+
             CourseResponse createdCourse = courseCommandService.createCourse(courseCreateRequest, imageUrl);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
@@ -69,6 +80,7 @@ public class CourseControllerServer {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
 
     @GetMapping("/{code}")

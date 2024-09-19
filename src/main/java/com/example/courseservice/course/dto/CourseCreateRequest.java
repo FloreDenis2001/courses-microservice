@@ -12,5 +12,5 @@ public record CourseCreateRequest(
         Double price,
         String additionalDetails,
         List<String> learningObjectives
-) implements Serializable {
+)  {
 }

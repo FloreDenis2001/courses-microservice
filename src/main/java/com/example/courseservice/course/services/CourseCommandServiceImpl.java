@@ -28,7 +28,7 @@ public class CourseCommandServiceImpl implements CourseCommandService {
         course.setImageUrl(imageUrl);
         course.setCreatedAt(LocalDateTime.now());
         course.setUpdatedAt(LocalDateTime.now());
-        Course savedCourse = courseRepo.save(course);
+        Course savedCourse = courseRepo.saveAndFlush(course);
         return convertToDto(savedCourse);
     }
 
