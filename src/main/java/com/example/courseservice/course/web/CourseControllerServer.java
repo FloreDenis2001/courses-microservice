@@ -102,8 +102,5 @@ public class CourseControllerServer {
     }
 
 
-    @GetMapping("/test")
-    public String test() {
-        return "Test";
-    }
+
 }
