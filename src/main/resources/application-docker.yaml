@@ -1,40 +1,9 @@
 spring:
-  application:
-    name: course-service
+
   datasource:
     url: jdbc:mysql://mysql:3306/courseservice_db?createDatabaseIfNotExist=true
     username: root
     password: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate.dialect: org.hibernate.dialect.MySQLDialect
-      hibernate.format_sql: true
-    show-sql: true
-
-token:
-  jwt:
-    secretKey: asdasdasdasdasd123344asdasdasdasdasasd12321332sadas
-    tokenPrefix: Bearer
-    tokenExpirationAfterDays: 7
-
-springdoc:
-  api-docs:
-    enabled: true
-    common:
-      version: 1.0.0
-      title: Auth Service API
-      description: API Documentation for Auth Service
-      termsOfService: MY TERMS OF SERVICE
-      license: MY LICENSE
-      licenseUrl: MY LICENSE URL
-      externalDocDesc: MY WIKI PAGE
-      externalDocUrl: MY WIKI URL
-      contact:
-        name: NAME OF CONTACT
-        url: URL TO CONTACT
-        email: contact@mail.com
 
 logging:
   pattern:
