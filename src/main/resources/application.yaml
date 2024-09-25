@@ -40,3 +40,6 @@ springdoc:
     enabled: true
   api-docs:
     enabled: true
+
+param:
+  courses-auth-service: localhost
