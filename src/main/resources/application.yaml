@@ -34,3 +34,9 @@ feign:
     config:
       default:
         loggerLevel: full
+        
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true

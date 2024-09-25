@@ -24,7 +24,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>2022.0.4</version> <!-- Versiune compatibilă cu Spring Boot 3.3.x -->
+				<version>2022.0.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -86,6 +86,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.7.0</version>
 		</dependency>
 
 		<dependency>
