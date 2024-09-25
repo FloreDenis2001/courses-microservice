@@ -10,5 +10,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface AuthService {
     @GetMapping("/getUserRole")
     ResponseEntity<String> getUserRole(@RequestHeader("Authorization") String token);
+
+    @GetMapping("/findId")
+    ResponseEntity<Long> findId(@RequestHeader("Authorization") String token);
 }
 

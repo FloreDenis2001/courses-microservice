@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Table(name = "enrollments")
 @Entity(name = "Enrollment")
 @Getter
@@ -23,6 +26,9 @@ public class Enrollment {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "enrollment_code", nullable = false, unique = true, updatable = false)
+    private String enrollmentCode;
+
     @Column(name = "course_id", nullable = false)
     private Long courseId;
 
@@ -30,5 +36,10 @@ public class Enrollment {
     private Long userId;
 
     @Column(name = "enrolled_at", nullable = false)
-    private String enrolledAt;
+    private LocalDateTime enrolledAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.enrollmentCode = UUID.randomUUID().toString();
+    }
 }

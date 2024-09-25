@@ -15,4 +15,9 @@ public class AuthServiceAdapter {
         ResponseEntity<String> response = authService.getUserRole(token);
         return response.getBody();
     }
+
+    public Long findId(String token) {
+        ResponseEntity<Long> response = authService.findId(token);
+        return response.getBody();
+    }
 }
