@@ -1,5 +1,7 @@
 package com.example.courseservice.lection.service;
 
+import com.example.courseservice.course.model.Course;
+import com.example.courseservice.course.repo.CourseRepo;
 import com.example.courseservice.lection.dto.LectionCreateRequest;
 import com.example.courseservice.lection.dto.LectionCreateResponse;
 import com.example.courseservice.lection.dto.LectionDTO;
@@ -17,23 +19,24 @@ public class LectionCommandServiceImpl implements LectionCommandService {
 
     private final LectionRepo lectionRepo;
 
-    public LectionCommandServiceImpl(LectionRepo lectionRepo) {
+    private final CourseRepo courseRepo;
+
+    public LectionCommandServiceImpl(LectionRepo lectionRepo, CourseRepo courseRepo) {
         this.lectionRepo = lectionRepo;
+        this.courseRepo = courseRepo;
     }
 
     @Override
-    public LectionCreateResponse addLection(LectionCreateRequest lectionCreateRequest, String videoUrl, String supportFileUrl) {
-        Optional<Lection> existingLection = lectionRepo.findByCode(lectionCreateRequest.code());
-        if (existingLection.isPresent()) {
-            throw new LectionNotFoundException("Lection with code " + lectionCreateRequest.code() + " already exists");
-        }
+    public LectionCreateResponse addLection(LectionCreateRequest lectionCreateRequest, String videoUrl, String supportFileUrl,String courseCode) {
+        Optional<Course> existingCourse = courseRepo.findByCode(courseCode);
+       
         Lection addLection = Lection.builder()
-                .code(lectionCreateRequest.code())
                 .name(lectionCreateRequest.name())
                 .description(lectionCreateRequest.description())
                 .videoUrl(videoUrl)
                 .supportFileUrl(supportFileUrl)
                 .duration(lectionCreateRequest.duration())
+                .course(existingCourse.get())
                 .build();
 
         lectionRepo.saveAndFlush(addLection);

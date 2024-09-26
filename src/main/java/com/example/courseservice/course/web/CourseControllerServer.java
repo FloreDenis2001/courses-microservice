@@ -62,7 +62,6 @@ public class CourseControllerServer {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        System.out.println("CourseCreateRequest: " + courseCreateRequest);
 
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -83,8 +82,8 @@ public class CourseControllerServer {
 
 
 
-    @GetMapping("/{code}")
-    public ResponseEntity<CourseResponse> getCourseByCode(@PathVariable String code) {
+    @GetMapping("/code")
+    public ResponseEntity<CourseResponse> getCourseByCode(@RequestParam String code) {
         return ResponseEntity.ok(courseQuerryService.findByCode(code));
     }
 

@@ -8,7 +8,7 @@ public interface LectionCommandService {
 
 
 
-    LectionCreateResponse addLection(LectionCreateRequest lectionCreateRequest, String videoUrl, String supportFileUrl);
+    LectionCreateResponse addLection(LectionCreateRequest lectionCreateRequest, String videoUrl, String supportFileUrl,String courseCode);
 
     void updateLection(String codeLection, LectionDTO lectionDTO);
 

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Table(name = "lections")
 @Entity(name = "Lection")
 @Getter
@@ -23,7 +25,7 @@ public class Lection {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="code", nullable = false)
+    @Column(name="code",  nullable = false, unique = true, updatable = false)
     private String code;
 
     @Column(name = "video_url", nullable = false)
@@ -44,4 +46,9 @@ public class Lection {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+    @PrePersist
+    protected void onCreate() {
+        this.code = UUID.randomUUID().toString();
+    }
 }
