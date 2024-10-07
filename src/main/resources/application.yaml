@@ -59,3 +59,5 @@ management:
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
+logs:
+  destination: localhost:3100

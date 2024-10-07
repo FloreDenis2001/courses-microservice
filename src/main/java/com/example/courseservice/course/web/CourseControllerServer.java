@@ -8,8 +8,7 @@ import com.example.courseservice.intercom.auth.AuthServiceAdapter;
 import com.example.courseservice.intercom.b2.CommandB2S3Adapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpHeaders;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import java.util.UUID;
 @RestController
 @CrossOrigin
 @RequestMapping("/courses/api/v1/")
+@Slf4j
 public class CourseControllerServer {
 
     private final CourseQuerryServiceImpl courseQuerryService;
@@ -46,7 +46,7 @@ public class CourseControllerServer {
             @RequestPart("course") String courseJson ,
             @RequestHeader("Authorization") String token
              ) {
-
+        log.info("Se incercă adăugarea unui curs");
         String userRole = authServiceAdapter.getUserRole(token);
 
         if (!"ADMIN".equals(userRole)) {
